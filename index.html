@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automation Engineer Portfolio</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Pretendard (Korean modern font) -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Pretendard', 'sans-serif'],
+                    },
+                    colors: {
+                        tech: {
+                            dark: '#0B1120',
+                            card: '#1E293B',
+                            primary: '#06B6D4', // Cyan
+                            secondary: '#3B82F6', // Blue
+                            accent: '#8B5CF6' // Purple
+                        }
+                    },
+                    animation: {
+                        'gradient-x': 'gradient-x 15s ease infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        'gradient-x': {
+                            '0%, 100%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'left center'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'right center'
+                            },
+                        },
+                        'float': {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0B1120;
+            color: #F8FAFC;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .text-gradient {
+            background: linear-gradient(to right, #06B6D4, #3B82F6, #8B5CF6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* Chatbot specific styles */
+        .chat-message {
+            opacity: 0;
+            transform: translateY(10px);
+            animation: messageFadeIn 0.3s forwards ease-out;
+        }
+        @keyframes messageFadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .typing-indicator span {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background-color: #94A3B8;
+            border-radius: 50%;
+            margin: 0 2px;
+            animation: typing 1.4s infinite both;
+        }
+        .typing-indicator span:nth-child(1) { animation-delay: 0s; }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typing {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+        
+        /* Reveal on scroll */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-tech-primary selection:text-white overflow-x-hidden">
+
+    <nav class="fixed w-full z-50 top-0 transition-all duration-300" id="navbar">
+        <div class="glass-panel w-full">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-20">
+                    <div class="flex-shrink-0 cursor-pointer text-2xl font-bold tracking-tighter" onclick="window.scrollTo(0,0)">
+                        <span class="text-white">Auto</span><span class="text-tech-primary">Eng.</span>
+                    </div>
+                    <div class="hidden md:block">
+                        <div class="ml-10 flex items-baseline space-x-8">
+                            <a href="#about" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">About</a>
+                            <a href="#expertise" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">Expertise</a>
+                            <a href="#vision" class="text-tech-primary hover:text-tech-secondary px-3 py-2 rounded-md text-sm font-bold transition-colors">AI Vision</a>
+                            <a href="#contact" class="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-full text-sm font-medium transition-colors">Contact</a>
+                        </div>
+                    </div>
+                    <div class="md:hidden">
+                        <button id="mobile-menu-btn" class="text-gray-400 hover:text-white focus:outline-none">
+                            <i class="fas fa-bars text-2xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div class="hidden md:hidden glass-panel" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#about" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">About</a>
+                <a href="#expertise" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Expertise</a>
+                <a href="#vision" class="text-tech-primary block px-3 py-2 rounded-md text-base font-medium">AI Vision</a>
+                <a href="#contact" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+        <!-- Background Effects -->
+        <div class="absolute inset-0 z-0">
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-tech-primary/20 rounded-full mix-blend-screen filter blur-3xl opacity-50 animate-pulse-slow"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-tech-secondary/20 rounded-full mix-blend-screen filter blur-3xl opacity-50 animate-pulse-slow" style="animation-delay: 2s;"></div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=')] z-0"></div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-tech-primary/30 bg-tech-primary/10 text-tech-primary text-sm font-medium mb-8 backdrop-blur-sm">
+                <span class="relative flex h-3 w-3">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-tech-primary opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-3 w-3 bg-tech-primary"></span>
+                </span>
+                Semiconductor & Display Automation
+            </div>
+            
+            <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 leading-tight">
+                현장의 문제를 <br class="hidden md:block" />
+                <span class="text-gradient">AI와 연결하는 엔지니어</span>
+            </h1>
+            
+            <p class="mt-4 max-w-2xl text-lg md:text-xl text-gray-400 mx-auto mb-10 leading-relaxed">
+                반도체/디스플레이 계측설비 자동화의 전문가입니다. <br class="hidden sm:block" />
+                복잡한 코드 작성 없이도 AI의 힘을 빌려, 누구나 쉽게 설비를 다루고 에러를 조치할 수 있는 미래의 라인을 구축하고 있습니다.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#vision" class="relative group px-8 py-4 rounded-full font-bold text-lg text-white overflow-hidden transition-all transform hover:scale-105 shadow-[0_0_20px_rgba(6,182,212,0.4)] hover:shadow-[0_0_30px_rgba(139,92,246,0.6)]">
+                    <div class="absolute inset-0 bg-gradient-to-r from-tech-primary via-tech-secondary to-tech-accent bg-[length:200%_200%] animate-gradient-x"></div>
+                    <div class="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <span class="relative z-10 flex items-center justify-center drop-shadow-md">
+                        <i class="fas fa-robot mr-2 group-hover:animate-bounce"></i> AI 챗봇 비전 보기
+                    </span>
+                </a>
+                <a href="#about" class="px-8 py-4 bg-tech-dark/50 backdrop-blur-sm border border-tech-secondary/50 rounded-full font-bold text-lg text-white hover:bg-tech-secondary/20 hover:border-tech-secondary hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] transition-all">
+                    자세히 알아보기
+                </a>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <a href="#about" class="text-gray-400 hover:text-white">
+                <i class="fas fa-chevron-down text-2xl"></i>
+            </a>
+        </div>
+    </section>
+
+    <section id="about" class="py-24 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">About Me</h2>
+                <div class="w-20 h-1 bg-tech-primary mx-auto rounded-full"></div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-12 items-center reveal">
+                <div class="space-y-6 text-gray-300 leading-relaxed text-lg">
+                    <p>
+                        안녕하세요. 반도체 및 디스플레이 라인의 핵심인 <strong class="text-white">계측설비 자동화 업무</strong>를 담당하고 있는 엔지니어입니다.
+                    </p>
+                    <p>
+                        저는 전문 소프트웨어 개발자는 아니지만, 수년간 생산 현장에서 발생하는 다양한 설비 이슈와 로그 데이터를 분석해 온 <strong class="text-tech-primary">도메인 전문가</strong>입니다. 현장의 오퍼레이터나 신입 엔지니어들이 복잡한 설비 매뉴얼과 로그 앞에서 겪는 어려움을 누구보다 잘 이해하고 있습니다.
+                    </p>
+                    <p class="p-4 border-l-4 border-tech-secondary bg-tech-secondary/10 rounded-r-lg text-white font-medium">
+                        "저의 목표는 AI 기술(LLM)을 지렛대 삼아, 현장 경험과 노하우를 누구나 접근 가능한 형태의 시스템으로 변환하는 것입니다."
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="glass-panel p-6 rounded-2xl border-t border-white/10 flex flex-col items-center justify-center text-center transform transition-transform hover:-translate-y-2">
+                        <i class="fas fa-microchip text-4xl text-tech-primary mb-4"></i>
+                        <h3 class="font-bold text-xl mb-2 text-white">Semiconductor</h3>
+                        <p class="text-sm text-gray-400">반도체 계측설비</p>
+                    </div>
+                    <div class="glass-panel p-6 rounded-2xl border-t border-white/10 flex flex-col items-center justify-center text-center transform transition-transform hover:-translate-y-2">
+                        <i class="fas fa-tv text-4xl text-tech-secondary mb-4"></i>
+                        <h3 class="font-bold text-xl mb-2 text-white">Display</h3>
+                        <p class="text-sm text-gray-400">디스플레이 패널 자동화</p>
+                    </div>
+                    <div class="glass-panel p-6 rounded-2xl border-t border-white/10 flex flex-col items-center justify-center text-center transform transition-transform hover:-translate-y-2">
+                        <i class="fas fa-network-wired text-4xl text-tech-accent mb-4"></i>
+                        <h3 class="font-bold text-xl mb-2 text-white">SECS/GEM</h3>
+                        <p class="text-sm text-gray-400">설비 통신 표준화</p>
+                    </div>
+                    <div class="glass-panel p-6 rounded-2xl border-t border-white/10 flex flex-col items-center justify-center text-center transform transition-transform hover:-translate-y-2">
+                        <i class="fas fa-brain text-4xl text-white mb-4"></i>
+                        <h3 class="font-bold text-xl mb-2 text-white">AI / LLM</h3>
+                        <p class="text-sm text-gray-400">프롬프트 엔지니어링</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="vision" class="py-24 relative bg-tech-dark">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-tech-primary/5 to-transparent z-0"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            
+            <div class="text-center mb-16 reveal">
+                <span class="text-tech-primary font-bold tracking-wider uppercase text-sm mb-2 block">Core Project Vision</span>
+                <h2 class="text-3xl md:text-5xl font-bold mb-6">설비 자동화 LLM 어시스턴트</h2>
+                <p class="max-w-3xl mx-auto text-gray-400 text-lg">
+                    복잡한 코드나 매뉴얼 없이, 자연어 대화만으로 설비의 에러를 분석하고 조치 방법을 가이드하는 챗봇 시스템을 개발하고 있습니다. 현장의 지식을 AI에 이식하여 누구나 숙련된 엔지니어처럼 대처할 수 있습니다.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-12 gap-8 items-stretch reveal">
+                
+                <!-- Project Description -->
+                <div class="lg:col-span-5 flex flex-col justify-center space-y-8">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-tech-primary/20 flex items-center justify-center border border-tech-primary/50 text-tech-primary text-xl">
+                            1
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-xl font-bold text-white mb-2">실시간 설비 로그 분석</h3>
+                            <p class="text-gray-400">방대한 설비 로그(Log)를 복사해서 붙여넣기만 하면, LLM이 에러의 근본 원인(Root Cause)을 정확히 요약해 줍니다.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-tech-secondary/20 flex items-center justify-center border border-tech-secondary/50 text-tech-secondary text-xl">
+                            2
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-xl font-bold text-white mb-2">단계별 에러 조치 가이드</h3>
+                            <p class="text-gray-400">매뉴얼을 찾을 필요 없이, 현재 상황에 맞는 물리적 조치 방법과 SW 리셋 절차를 1-2-3 단계로 제시합니다.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-tech-accent/20 flex items-center justify-center border border-tech-accent/50 text-tech-accent text-xl">
+                            3
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-xl font-bold text-white mb-2">누구나 접근 가능한 자동화</h3>
+                            <p class="text-gray-400">파이썬 스크립트 작성이나 복잡한 명령어 없이 "알람 A-124 떴는데 어떻게 해?" 라는 말 한마디로 솔루션을 얻습니다.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Chatbot Mockup -->
+                <div class="lg:col-span-7">
+                    <div class="glass-panel border border-white/10 rounded-2xl overflow-hidden shadow-2xl flex flex-col h-[500px]">
+                        <!-- Chat Header -->
+                        <div class="bg-white/5 border-b border-white/10 p-4 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-gradient-to-r from-tech-primary to-tech-secondary flex items-center justify-center shadow-lg">
+                                    <i class="fas fa-robot text-white"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-bold">Auto-Assistant AI</h4>
+                                    <div class="flex items-center gap-2 text-xs text-green-400">
+                                        <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> Online
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="text-gray-400 hover:text-white" onclick="resetChat()" title="채팅 초기화">
+                                <i class="fas fa-redo-alt"></i>
+                            </button>
+                        </div>
+
+                        <!-- Chat Messages Area -->
+                        <div id="chat-box" class="flex-1 p-4 overflow-y-auto space-y-4 bg-tech-dark/50 scroll-smooth">
+                            <!-- Initial Bot Message -->
+                            <div class="flex gap-3 max-w-[85%]">
+                                <div class="w-8 h-8 rounded-full bg-tech-primary flex items-center justify-center flex-shrink-0 mt-1">
+                                    <i class="fas fa-robot text-xs text-white"></i>
+                                </div>
+                                <div class="bg-tech-card border border-white/10 p-3 rounded-2xl rounded-tl-none text-sm text-gray-200 shadow-md">
+                                    안녕하세요! 계측설비 자동화 어시스턴트입니다.<br>
+                                    발생한 알람 코드나 이상 증상, 또는 분석이 필요한 로그를 입력해주세요.<br><br>
+                                    <span class="text-xs text-gray-400">💡 아래 예시 버튼을 클릭해 테스트해보세요.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Input Area & Quick Prompts -->
+                        <div class="p-4 bg-white/5 border-t border-white/10">
+                            <!-- Quick action buttons -->
+                            <div class="flex gap-2 overflow-x-auto pb-3 scrollbar-hide" id="quick-actions">
+                                <button onclick="sendMockMessage('scenario1')" class="whitespace-nowrap px-3 py-1.5 bg-tech-primary/20 hover:bg-tech-primary/40 border border-tech-primary/30 rounded-full text-xs text-tech-primary transition-colors">
+                                    🚨 알람 E-302 (Stage Motion Error) 발생
+                                </button>
+                                <button onclick="sendMockMessage('scenario2')" class="whitespace-nowrap px-3 py-1.5 bg-tech-secondary/20 hover:bg-tech-secondary/40 border border-tech-secondary/30 rounded-full text-xs text-tech-secondary transition-colors">
+                                    📄 통신 로그(SECS) 분석 요청
+                                </button>
+                            </div>
+                            
+                            <div class="flex gap-2">
+                                <input type="text" id="chat-input" disabled placeholder="대화형 AI 데모입니다. 위 버튼을 클릭하세요." class="flex-1 bg-tech-dark border border-white/20 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-tech-primary/50 cursor-not-allowed opacity-70">
+                                <button disabled class="w-12 h-12 bg-gray-600 rounded-xl flex items-center justify-center text-white cursor-not-allowed opacity-70">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-20 relative border-t border-white/10">
+        <div class="max-w-4xl mx-auto px-4 text-center reveal">
+            <h2 class="text-3xl font-bold mb-8">함께 자동화의 미래를 만들어가요</h2>
+            <p class="text-gray-400 mb-10 text-lg">
+                도메인 지식과 AI의 결합은 제조 라인의 패러다임을 바꿀 수 있습니다. <br>
+                프로젝트에 대한 조언이나 협업 제안을 환영합니다.
+            </p>
+            <div class="flex justify-center gap-6 mb-12">
+                <a href="#" class="w-14 h-14 rounded-full bg-tech-card border border-white/10 flex items-center justify-center text-2xl text-gray-300 hover:text-white hover:border-tech-primary hover:shadow-[0_0_15px_rgba(6,182,212,0.5)] transition-all">
+                    <i class="fas fa-envelope"></i>
+                </a>
+                <a href="#" class="w-14 h-14 rounded-full bg-tech-card border border-white/10 flex items-center justify-center text-2xl text-gray-300 hover:text-white hover:border-tech-secondary hover:shadow-[0_0_15px_rgba(59,130,246,0.5)] transition-all">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="#" class="w-14 h-14 rounded-full bg-tech-card border border-white/10 flex items-center justify-center text-2xl text-gray-300 hover:text-white hover:border-white transition-all">
+                    <i class="fab fa-github"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-tech-dark border-t border-white/5 py-8 text-center text-sm text-gray-500">
+        <p>&copy; 2026 Automation Engineer Portfolio. All rights reserved.</p>
+        <p class="mt-2 text-xs">Built with HTML, Tailwind CSS & AI Vision</p>
+    </footer>
+
+    <script>
+        // Scroll Reveal Animation
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        reveal(); // Trigger on load
+
+        // Navbar blur on scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-lg');
+            } else {
+                navbar.classList.remove('shadow-lg');
+            }
+        });
+
+        // Mobile menu toggle
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Mobile menu click close
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // --- Mock Chatbot Logic ---
+        const chatBox = document.getElementById('chat-box');
+        const quickActions = document.getElementById('quick-actions');
+
+        const botData = {
+            'scenario1': {
+                user: "🚨 알람 E-302 (Stage Motion Error) 발생. 조치 방법 알려줘.",
+                bot: `<div class="font-bold text-tech-primary mb-2">[E-302] 계측 스테이지 구동 에러 분석</div>
+                      <p class="mb-2">해당 알람은 계측기기의 X-Y 스테이지가 지정된 위치로 이동하지 못했을 때 발생합니다.</p>
+                      <ul class="list-decimal pl-5 space-y-1 text-sm text-gray-300">
+                        <li><strong>물리적 확인:</strong> 스테이지 구동부(레일)에 이물질이나 웨이퍼/글래스 조각이 끼어있는지 확인하세요.</li>
+                        <li><strong>모터 서보 확인:</strong> 설비 제어 PC의 'Motion Control' 탭에서 서보 모터(Servo)가 ON 상태인지 확인하세요.</li>
+                        <li><strong>초기화:</strong> 이물질이 없다면, UI에서 [Home Search] 버튼을 눌러 스테이지 원점을 재설정하세요.</li>
+                      </ul>
+                      <div class="mt-3 p-2 bg-yellow-500/10 border border-yellow-500/50 rounded text-yellow-200 text-xs">
+                        ⚠️ 주의: 모터 축을 수동으로 밀지 마세요. 캘리브레이션이 틀어질 수 있습니다.
+                      </div>`
+            },
+            'scenario2': {
+                user: "📄 설비가 Host랑 연결이 끊겼어. 로그 확인할게: [T3 Timeout on SECS-I port]",
+                bot: `<div class="font-bold text-tech-secondary mb-2">통신 로그 분석 (SECS/GEM)</div>
+                      <p class="mb-2 text-sm">제공해주신 <code>[T3 Timeout]</code> 로그 분석 결과입니다.</p>
+                      <div class="bg-black/50 p-2 rounded border border-gray-700 font-mono text-xs mb-2">
+                        원인: 설비가 메시지를 보냈으나, Host(서버)로부터 지정된 시간(T3) 내에 응답(Reply)을 받지 못함.
+                      </div>
+                      <p class="text-sm font-bold text-white mb-1">✅ 조치 가이드:</p>
+                      <ul class="list-disc pl-5 space-y-1 text-sm text-gray-300">
+                        <li>물리적 랜선/시리얼 케이블 연결 상태 확인</li>
+                        <li>공장 Host 서버(CIM) 정상 가동 여부 전산팀 확인</li>
+                        <li>설비 UI에서 [Communication] -> [Online Remote] 버튼을 눌러 재접속 시도</li>
+                      </ul>`
+            }
+        };
+
+        function createMessageElement(text, isUser = false) {
+            const wrapper = document.createElement('div');
+            wrapper.className = `flex gap-3 max-w-[85%] chat-message ${isUser ? 'ml-auto flex-row-reverse' : ''}`;
+            
+            const avatar = document.createElement('div');
+            avatar.className = `w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-1 ${isUser ? 'bg-gray-700' : 'bg-tech-primary'}`;
+            avatar.innerHTML = isUser ? '<i class="fas fa-user text-xs text-white"></i>' : '<i class="fas fa-robot text-xs text-white"></i>';
+
+            const bubble = document.createElement('div');
+            bubble.className = `p-3 rounded-2xl text-sm shadow-md ${isUser ? 'bg-white/10 border border-white/20 rounded-tr-none text-white' : 'bg-tech-card border border-white/10 rounded-tl-none text-gray-200'}`;
+            bubble.innerHTML = text;
+
+            wrapper.appendChild(avatar);
+            wrapper.appendChild(bubble);
+            return wrapper;
+        }
+
+        function createTypingIndicator() {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'flex gap-3 max-w-[85%] chat-message typing-indicator-wrapper';
+            wrapper.id = 'typing-indicator';
+            
+            wrapper.innerHTML = `
+                <div class="w-8 h-8 rounded-full bg-tech-primary flex items-center justify-center flex-shrink-0 mt-1">
+                    <i class="fas fa-robot text-xs text-white"></i>
+                </div>
+                <div class="bg-tech-card border border-white/10 p-4 rounded-2xl rounded-tl-none shadow-md flex items-center">
+                    <div class="typing-indicator">
+                        <span></span><span></span><span></span>
+                    </div>
+                </div>
+            `;
+            return wrapper;
+        }
+
+        function scrollToBottom() {
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function sendMockMessage(scenarioKey) {
+            const data = botData[scenarioKey];
+            if(!data) return;
+
+            // Hide quick actions
+            quickActions.style.opacity = '0.5';
+            quickActions.style.pointerEvents = 'none';
+
+            // 1. Add User Message
+            chatBox.appendChild(createMessageElement(data.user, true));
+            scrollToBottom();
+
+            // 2. Show Typing Indicator
+            setTimeout(() => {
+                const typing = createTypingIndicator();
+                chatBox.appendChild(typing);
+                scrollToBottom();
+
+                // 3. Remove Typing and Show Bot Message
+                setTimeout(() => {
+                    const typingEl = document.getElementById('typing-indicator');
+                    if(typingEl) typingEl.remove();
+                    
+                    chatBox.appendChild(createMessageElement(data.bot, false));
+                    scrollToBottom();
+                    
+                    // Restore quick actions
+                    quickActions.style.opacity = '1';
+                    quickActions.style.pointerEvents = 'auto';
+                }, 1500);
+
+            }, 400);
+        }
+
+        function resetChat() {
+            chatBox.innerHTML = `
+                <div class="flex gap-3 max-w-[85%] chat-message">
+                    <div class="w-8 h-8 rounded-full bg-tech-primary flex items-center justify-center flex-shrink-0 mt-1">
+                        <i class="fas fa-robot text-xs text-white"></i>
+                    </div>
+                    <div class="bg-tech-card border border-white/10 p-3 rounded-2xl rounded-tl-none text-sm text-gray-200 shadow-md">
+                        안녕하세요! 계측설비 자동화 어시스턴트입니다.<br>
+                        발생한 알람 코드나 이상 증상, 또는 분석이 필요한 로그를 입력해주세요.<br><br>
+                        <span class="text-xs text-gray-400">💡 아래 예시 버튼을 클릭해 테스트해보세요.</span>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
